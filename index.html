@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Jaehyuck Lim — Ph.D. Student, Cho Chun Shik Graduate School of Mobility, KAIST. Research on humanoid sim-to-real transfer and simulator-based traffic safety.">
+<title>Jaehyuck Lim — KAIST</title>
+<style>
+  :root {
+    --bg:#ffffff; --surface:#ffffff; --ink:#161616; --muted:#606060; --faint:#9a9a9a;
+    --line:#e8e8e8; --line-strong:#d4d4d4; --accent:#2647d8; --accent-soft:#eaeeff;
+    --maxw:840px;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1012; --surface:#161719; --ink:#eaeaea; --muted:#a0a0a4; --faint:#6b6c70;
+      --line:#26272a; --line-strong:#34353a; --accent:#93aaf5; --accent-soft:#182036; }
+  }
+  :root[data-theme="light"]{ --bg:#ffffff; --surface:#ffffff; --ink:#161616; --muted:#606060;
+    --faint:#9a9a9a; --line:#e8e8e8; --line-strong:#d4d4d4; --accent:#2647d8; --accent-soft:#eaeeff; }
+  :root[data-theme="dark"]{ --bg:#0f1012; --surface:#161719; --ink:#eaeaea; --muted:#a0a0a4;
+    --faint:#6b6c70; --line:#26272a; --line-strong:#34353a; --accent:#93aaf5; --accent-soft:#182036; }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    line-height:1.7; font-size:16px; -webkit-font-smoothing:antialiased; letter-spacing:-0.003em; }
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* ---- top bar ---- */
+  header { position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:saturate(1.3) blur(10px); border-bottom:1px solid var(--line); }
+  .nav { display:flex; align-items:center; justify-content:flex-end; gap:16px;
+    max-width:var(--maxw); margin:0 auto; padding:16px 28px; }
+  .brand { display:flex; align-items:baseline; gap:9px; background:none; border:0; padding:0;
+    cursor:pointer; font-family:var(--sans); color:var(--ink); }
+  .brand b { font-weight:700; font-size:1.02rem; letter-spacing:-0.01em; }
+  .brand small { color:var(--faint); font-size:0.8rem; font-weight:500; }
+  .nav-links { display:flex; gap:26px; }
+  .nav-links button { background:none; border:0; padding:0; cursor:pointer; font-family:var(--sans);
+    color:var(--muted); font-size:0.9rem; letter-spacing:0.005em; position:relative; }
+  .nav-links button:hover { color:var(--ink); }
+  .nav-links button.active { color:var(--ink); font-weight:600; }
+  .nav-links button.active::after { content:""; position:absolute; left:0; right:0; bottom:-19px;
+    height:2px; background:var(--accent); }
+
+  /* ---- page switching ---- */
+  .page { display:none; }
+  .page.active { display:block; }
+
+  /* ---- home ---- */
+  .hero { padding:88px 0 72px; display:flex; gap:40px; align-items:center; }
+  .avatar { flex:0 0 auto; width:132px; height:132px; border-radius:50%; overflow:hidden;
+    border:1px solid var(--line-strong); background:var(--accent-soft); }
+  .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+  .avatar .ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .hero h1 { font-size:2.3rem; font-weight:700; margin:0 0 8px; letter-spacing:-0.03em; }
+  .role-line { color:var(--accent); font-weight:600; font-size:0.95rem; margin:0 0 14px;
+    text-transform:uppercase; letter-spacing:0.08em; }
+  .affil { margin:0 0 4px; font-weight:600; }
+  .affil-kr { margin:0 0 18px; color:var(--muted); font-size:0.92rem; }
+  .lead { color:var(--muted); max-width:56ch; margin:0 0 24px; }
+  .quicklinks { display:flex; gap:22px; flex-wrap:wrap; font-size:0.92rem; }
+  .quicklinks button { background:none; border:0; padding:0; cursor:pointer; font-family:var(--sans);
+    color:var(--accent); font-weight:600; font-size:0.92rem; display:inline-flex; align-items:center; gap:5px; }
+  .quicklinks button:hover { text-decoration:underline; }
+
+  /* ---- home sections ---- */
+  .home-sec { padding:40px 0 0; border-top:1px solid var(--line); }
+  .home-sec:first-of-type { border-top:1px solid var(--line); }
+  .home-sec-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:0 0 20px; }
+  .home-sec-head h2 { font-size:1.3rem; font-weight:700; margin:0; letter-spacing:-0.02em; color:var(--accent); }
+  .home-sec-head button { background:none; border:0; padding:0; cursor:pointer; font-family:var(--sans);
+    color:var(--muted); font-size:0.88rem; font-weight:600; }
+  .home-sec-head button:hover { color:var(--accent); text-decoration:underline; }
+
+  /* research preview */
+  .rp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; padding-bottom:8px; }
+  .rp-card { border:1px solid var(--line-strong); border-radius:10px; padding:18px; }
+  .rp-card .rp-no { font-size:0.78rem; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .rp-card h3 { margin:6px 0 0; font-size:1rem; font-weight:600; letter-spacing:-0.01em; }
+  @media (max-width:640px){ .rp-grid { grid-template-columns:1fr; } }
+
+  /* news */
+  .news { display:grid; padding-bottom:8px; }
+  .news-item { display:grid; grid-template-columns:96px 1fr; gap:16px; padding:15px 2px;
+    border-top:1px solid var(--line); }
+  .news-item:first-child { border-top:0; }
+  .news-item .date { color:var(--faint); font-size:0.85rem; font-variant-numeric:tabular-nums; font-weight:600; padding-top:1px; }
+  .news-item .txt { color:var(--ink); font-size:0.95rem; }
+  .news-item .tag { display:inline-block; font-size:0.7rem; font-weight:700; color:var(--accent);
+    background:var(--accent-soft); padding:2px 7px; border-radius:4px; margin-right:8px; vertical-align:1px; }
+  @media (max-width:640px){ .news-item { grid-template-columns:1fr; gap:3px; } }
+
+  /* ---- inner pages ---- */
+  .page-head { padding:64px 0 0; border-bottom:1px solid var(--line); }
+  .page-head h2 { font-size:1.75rem; font-weight:700; margin:0 0 20px; letter-spacing:-0.025em; color:var(--accent); }
+  .inner { padding:34px 0 72px; }
+  .prose p { color:var(--muted); margin:0 0 16px; max-width:64ch; }
+  .prose strong { color:var(--ink); font-weight:600; }
+  .interests { display:flex; gap:9px; flex-wrap:wrap; margin-top:14px; }
+  .interests span { font-size:0.85rem; color:var(--ink); border:1px solid var(--line-strong);
+    padding:5px 13px; border-radius:6px; }
+
+  /* research areas */
+  .areas { display:grid; gap:0; margin-top:14px; }
+  .area { display:grid; grid-template-columns:56px 1fr; gap:18px; padding:28px 2px;
+    border-top:1px solid var(--line); }
+  .area:last-child { border-bottom:1px solid var(--line); }
+  .area .idx { font-size:1.05rem; font-weight:700; color:var(--accent);
+    font-variant-numeric:tabular-nums; letter-spacing:0.02em; padding-top:3px; }
+  .area h3 { margin:0 0 6px; font-size:1.2rem; font-weight:700; letter-spacing:-0.015em; }
+  .area > div > p { margin:0; color:var(--muted); font-size:0.96rem; max-width:60ch; }
+  .studies { display:grid; gap:12px; margin-top:18px; }
+  .study { border:1px solid var(--line-strong); border-radius:10px; padding:16px 18px;
+    background:var(--surface); }
+  .study .st-top { display:flex; align-items:baseline; gap:10px; }
+  .study .st-no { font-size:0.75rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:2px 8px; border-radius:5px; font-variant-numeric:tabular-nums; }
+  .study h4 { margin:0; font-size:1rem; font-weight:600; letter-spacing:-0.01em; }
+  .study p { margin:8px 0 0; color:var(--muted); font-size:0.9rem; max-width:60ch; }
+  @media (max-width:640px){ .area { grid-template-columns:1fr; gap:8px; } }
+
+  /* ---- projects (expandable) ---- */
+  .proj-list { display:grid; }
+  details.proj { border-top:1px solid var(--line); }
+  details.proj:last-child { border-bottom:1px solid var(--line); }
+  details.proj summary { list-style:none; cursor:pointer; padding:22px 4px;
+    display:flex; gap:16px; align-items:flex-start; }
+  details.proj summary::-webkit-details-marker { display:none; }
+  .proj .chev { flex:0 0 auto; margin-top:5px; color:var(--faint); transition:transform .2s ease; }
+  details.proj[open] .chev { transform:rotate(90deg); color:var(--accent); }
+  .proj .s-main { flex:1; min-width:0; }
+  .proj .s-title { margin:0; font-size:1.05rem; font-weight:600; letter-spacing:-0.01em; }
+  .proj .s-sub { margin:3px 0 0; color:var(--muted); font-size:0.9rem; }
+  .proj .s-meta { display:flex; gap:8px; flex-wrap:wrap; margin-top:11px; align-items:center; }
+  .proj .yr { color:var(--faint); font-size:0.84rem; font-variant-numeric:tabular-nums; font-weight:600; }
+  .proj .role { font-size:0.75rem; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:5px; font-weight:600; }
+  .proj .fund { font-size:0.75rem; color:var(--muted); border:1px solid var(--line-strong);
+    padding:3px 9px; border-radius:5px; font-weight:600; }
+  .proj .body { padding:0 4px 24px 42px; }
+  .proj .body p { margin:0 0 14px; color:var(--muted); font-size:0.96rem; max-width:64ch; }
+  .proj .facts { display:grid; grid-template-columns:auto 1fr; gap:7px 18px; margin:0; font-size:0.9rem; }
+  .proj .facts dt { color:var(--faint); font-weight:600; text-transform:uppercase;
+    letter-spacing:0.05em; font-size:0.72rem; padding-top:2px; }
+  .proj .facts dd { margin:0; color:var(--ink); }
+
+  /* ---- papers ---- */
+  .sortbar { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .sortbar .lbl { color:var(--faint); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
+  .sortbar button { background:none; border:1px solid var(--line-strong); color:var(--muted);
+    font-family:var(--sans); font-size:0.82rem; padding:4px 12px; border-radius:6px; cursor:pointer; }
+  .sortbar button.active { color:var(--bg); background:var(--ink); border-color:var(--ink); font-weight:600; }
+  .paper-group { margin-top:40px; }
+  .group-head { display:flex; align-items:baseline; gap:10px; margin:0 0 6px;
+    padding-bottom:12px; border-bottom:2px solid var(--accent); }
+  .group-head h3 { font-size:1.15rem; font-weight:700; margin:0; letter-spacing:-0.01em; color:var(--accent); }
+  .group-head .count { color:var(--faint); font-size:0.85rem; font-variant-numeric:tabular-nums; font-weight:600; }
+  .papers { display:grid; }
+  .paper { display:grid; grid-template-columns:34px 1fr; gap:12px; padding:18px 2px;
+    border-bottom:1px solid var(--line); }
+  .paper .num { font-variant-numeric:tabular-nums; color:var(--faint); font-size:0.85rem;
+    font-weight:600; padding-top:1px; }
+  .paper .title { margin:0 0 5px; font-weight:600; font-size:1rem; letter-spacing:-0.01em; }
+  .paper .meta { margin:0; color:var(--muted); font-size:0.9rem; }
+  .paper .authors strong { color:var(--ink); }
+  .paper .venue { color:var(--ink); font-weight:600; font-style:italic; }
+  .paper .yr { font-variant-numeric:tabular-nums; }
+
+  /* ---- cv ---- */
+  .cv-box { border:1px solid var(--line-strong); border-radius:10px; padding:24px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+  .cv-box p { margin:0; color:var(--muted); }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:8px;
+    font-size:0.9rem; font-weight:600; cursor:pointer; font-family:var(--sans);
+    background:var(--ink); color:var(--bg); border:1px solid var(--ink); }
+  .btn:hover { text-decoration:none; opacity:0.9; }
+
+  /* ---- contact ---- */
+  .contact-grid { display:grid; gap:18px; max-width:60ch; }
+  .contact-row { display:grid; grid-template-columns:110px 1fr; gap:14px; align-items:baseline; }
+  .contact-row .k { text-transform:uppercase; letter-spacing:0.08em; font-size:0.72rem;
+    color:var(--faint); font-weight:700; }
+  .contact-row .v { color:var(--ink); }
+
+  footer { border-top:1px solid var(--line); margin-top:48px; padding:26px 0 52px;
+    color:var(--faint); font-size:0.84rem; }
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important;} }
+  @media (max-width:640px){
+    .hero { flex-direction:column; text-align:center; padding:56px 0 48px; }
+    .quicklinks, .interests { justify-content:center; }
+    .nav-links { gap:16px; }
+    .contact-row { grid-template-columns:1fr; gap:2px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="nav-links">
+      <button data-target="home">Home</button>
+      <button data-target="research">Research</button>
+      <button data-target="projects">Projects</button>
+      <button data-target="papers">Papers</button>
+      <button data-target="cv">CV</button>
+      <button data-target="contact">Contact</button>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <section class="page active" id="home">
+    <div class="hero">
+      <div class="avatar">
+        <img src="profile.jpg" alt="Jaehyuck Lim"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="ph" style="display:none">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--faint)"
+               stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1>Jaehyuck Lim</h1>
+        <p class="affil">Ph.D. Student, Cho Chun Shik Graduate School of Mobility, KAIST</p>
+        <p class="lead">
+          I am Jaehyuck Lim, a Ph.D. student at the KAIST Cho Chun Shik Graduate School of Mobility,
+          <a href="https://www.inhi.kim" target="_blank" rel="noopener">TUPA Lab</a>
+          (Advisor: Prof. Inhi Kim). Majoring in Transportation Engineering, I primarily conduct
+          research on humanoid-based sim-to-real transfer and human factor-centric traffic safety
+          using immersive simulators.
+        </p>
+        <div class="quicklinks">
+          <button data-target="papers">Papers →</button>
+          <button data-target="cv">CV →</button>
+          <a href="https://scholar.google.com/citations?user=zfSBUAIAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-sec">
+      <div class="home-sec-head">
+        <h2>Research</h2>
+        <button data-target="research">View all →</button>
+      </div>
+      <div class="rp-grid">
+        <div class="rp-card"><div class="rp-no">01</div><h3>Humanoid</h3></div>
+        <div class="rp-card"><div class="rp-no">02</div><h3>Sim-to-Real Transfer</h3></div>
+        <div class="rp-card"><div class="rp-no">03</div><h3>Simulator-based Traffic Safety</h3></div>
+      </div>
+    </div>
+
+    <div class="home-sec">
+      <div class="home-sec-head">
+        <h2>News</h2>
+      </div>
+      <div class="news">
+        <div class="news-item">
+          <span class="date">2026.07</span>
+          <span class="txt"><span class="tag">PAPER</span>New journal paper accepted. <em>(← Update this.)</em></span>
+        </div>
+        <div class="news-item">
+          <span class="date">2026.03</span>
+          <span class="txt"><span class="tag">TALK</span>Presented at a conference. <em>(← Update this.)</em></span>
+        </div>
+        <div class="news-item">
+          <span class="date">2026.01</span>
+          <span class="txt">Started a new research project. <em>(← Update this.)</em></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="page" id="research">
+    <div class="page-head"><h2>Research</h2></div>
+    <div class="inner prose">
+      <p style="margin-bottom:6px">
+        My research spans robot learning and traffic safety, connected by simulation as a
+        common tool. <em>(← Add a short overview paragraph here.)</em>
+      </p>
+
+      <div class="areas">
+
+        <div class="area">
+          <div class="idx">01</div>
+          <div>
+            <h3>Humanoid</h3>
+            <p>Brief description of your humanoid research — what you study and your goal.
+              <em>(← Content to be updated.)</em></p>
+          </div>
+        </div>
+
+        <div class="area">
+          <div class="idx">02</div>
+          <div>
+            <h3>Sim-to-Real Transfer</h3>
+            <p>Brief description of your sim-to-real transfer research — bridging simulation
+              and the real world. <em>(← Content to be updated.)</em></p>
+          </div>
+        </div>
+
+        <div class="area">
+          <div class="idx">03</div>
+          <div>
+            <h3>Simulator-based Traffic Safety</h3>
+            <p>Using driving/riding simulators to study and improve traffic safety.
+              This area includes three studies.</p>
+
+            <div class="studies">
+              <div class="study">
+                <div class="st-top"><span class="st-no">01</span>
+                  <h4>Study title one</h4></div>
+                <p>One or two sentences describing this study. <em>(← To be updated.)</em></p>
+              </div>
+              <div class="study">
+                <div class="st-top"><span class="st-no">02</span>
+                  <h4>Study title two</h4></div>
+                <p>One or two sentences describing this study. <em>(← To be updated.)</em></p>
+              </div>
+              <div class="study">
+                <div class="st-top"><span class="st-no">03</span>
+                  <h4>Study title three</h4></div>
+                <p>One or two sentences describing this study. <em>(← To be updated.)</em></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="page" id="projects">
+    <div class="page-head"><h2>Projects</h2></div>
+    <div class="inner">
+      <p class="prose" style="margin-bottom:22px">Click a project to view details.</p>
+      <div class="proj-list">
+
+        <details class="proj">
+          <summary>
+            <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            <div class="s-main">
+              <p class="s-title">Generative AI Leading Talent Cultivation Program</p>
+              <p class="s-sub">생성형 AI 선도 인재 양성 프로그램</p>
+              <div class="s-meta"><span class="yr">2026 – 2029</span>
+                <span class="role">Lead Researcher</span><span class="fund">IITP</span></div>
+            </div>
+          </summary>
+          <div class="body">
+            <p>A national program to cultivate leading talent in generative AI. I participate as the
+              <strong>lead researcher (대표 실무자)</strong>. <em>(← Description to be updated.)</em></p>
+            <dl class="facts">
+              <dt>Period</dt><dd>2026 – 2029</dd>
+              <dt>Role</dt><dd>Lead Researcher (대표 실무자)</dd>
+              <dt>Funding</dt><dd>IITP</dd>
+            </dl>
+          </div>
+        </details>
+
+        <details class="proj">
+          <summary>
+            <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            <div class="s-main">
+              <p class="s-title">Development of Virtual Environment and Demonstration Technology
+                for Automated Driving based on Metaverse</p>
+              <p class="s-sub">메타버스 기반 자율주행 가상환경 및 실증 기술 개발</p>
+              <div class="s-meta"><span class="yr">2023 – 2028</span>
+                <span class="role">Participating Researcher</span><span class="fund">MOLIT</span></div>
+            </div>
+          </summary>
+          <div class="body">
+            <p>Research on metaverse-based virtual environments and demonstration technology for
+              automated driving. I participate as a <strong>participating researcher (참여 실무자)</strong>.
+              <em>(← Description to be updated.)</em></p>
+            <dl class="facts">
+              <dt>Period</dt><dd>2023 – 2028</dd>
+              <dt>Role</dt><dd>Participating Researcher (참여 실무자)</dd>
+              <dt>Funding</dt><dd>MOLIT</dd>
+            </dl>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PAPERS -->
+  <section class="page" id="papers">
+    <div class="page-head"><h2>Papers</h2></div>
+    <div class="inner">
+      <div class="sortbar">
+        <span class="lbl">Sort</span>
+        <button id="sort-new" class="active">Newest</button>
+        <button id="sort-old">Oldest</button>
+      </div>
+
+      <div class="paper-group">
+        <div class="group-head"><h3>Journal Papers</h3><span class="count">4</span></div>
+        <div class="papers" id="journals">
+          <div class="paper" data-year="2026">
+            <div class="num"></div>
+            <div>
+              <p class="title">Micro mobility safety challenges: a study on drivers overtaking bicycles
+                and E-scooters in relation to road conditions and prior riding experience</p>
+              <p class="meta"><span class="authors">H Park, T Oh, <strong>J Lim</strong>, I Kim</span>.
+                <span class="venue">Transportation Research Part F: Traffic Psychology and Behaviour</span>,
+                <span class="yr">2026</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2025">
+            <div class="num"></div>
+            <div>
+              <p class="title">The impact of information delivery systems in tunnels depending on
+                lighting intensity and speed limit</p>
+              <p class="meta"><span class="authors"><strong>J Lim</strong>, H Park, T Oh, I Kim</span>.
+                <span class="venue">Tunnelling and Underground Space Technology</span>,
+                <span class="yr">2025</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2024">
+            <div class="num"></div>
+            <div>
+              <p class="title">Enhancing mutual understanding of e-scooter user's perspective in
+                overtaking maneuver through replaying own driving trajectory</p>
+              <p class="meta"><span class="authors">T Oh, <strong>J Lim</strong>, R Tamakloe, Z Li, I Kim</span>.
+                <span class="venue">Accident Analysis &amp; Prevention</span>, <span class="yr">2024</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2024">
+            <div class="num"></div>
+            <div>
+              <p class="title">Advancements and prospects in multisensor fusion for autonomous driving</p>
+              <p class="meta"><span class="authors">C Tu, L Wang, <strong>J Lim</strong>, I Kim</span>.
+                <span class="venue">Journal of Intelligent and Connected Vehicles</span>,
+                <span class="yr">2024</span>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paper-group">
+        <div class="group-head"><h3>Conference Papers</h3><span class="count">4</span></div>
+        <div class="papers" id="confs">
+          <div class="paper" data-year="2025">
+            <div class="num"></div>
+            <div>
+              <p class="title">E-Scooter Alarm Warning System for Pothole Detection: A Simulation Study</p>
+              <p class="meta"><span class="authors">HZ Ng, <strong>J Lim</strong>, T Oh, I Kim</span>.
+                <span class="venue">IEEE 28th International Conference on Intelligent Transportation Systems (ITSC)</span>,
+                <span class="yr">2025</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2025">
+            <div class="num"></div>
+            <div>
+              <p class="title">The Impact of Head-Up Display Warnings on Aggressive Driving:
+                Visual and Behavior Insights</p>
+              <p class="meta"><span class="authors"><strong>J Lim</strong>, SH Park, I Kim</span>.
+                <span class="venue">IEEE 28th International Conference on Intelligent Transportation Systems (ITSC)</span>,
+                <span class="yr">2025</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2025">
+            <div class="num"></div>
+            <div>
+              <p class="title">Micromobility Safety Challenges: A Study on Drivers Overtaking Bicycles
+                and E-Scooters According to Road Conditions and Cross-Modal Experience</p>
+              <p class="meta"><span class="authors">H Park, T Oh, <strong>J Lim</strong>, I Kim</span>.
+                <span class="venue">TRB 104th Annual Meeting</span>, <span class="yr">2025</span>.</p>
+            </div>
+          </div>
+          <div class="paper" data-year="2024">
+            <div class="num"></div>
+            <div>
+              <p class="title">The impact of information delivery systems in tunnels depending on
+                lighting intensity and speed limit</p>
+              <p class="meta"><span class="authors"><strong>J Lim</strong>, H Park, T Oh, I Kim</span>.
+                <span class="venue">TRB 103rd Annual Meeting</span>, <span class="yr">2024</span>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CV -->
+  <section class="page" id="cv">
+    <div class="page-head"><h2>Curriculum Vitae</h2></div>
+    <div class="inner">
+      <div class="cv-box">
+        <p>Download my full curriculum vitae (PDF).</p>
+        <a class="btn" href="cv.pdf">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="page" id="contact">
+    <div class="page-head"><h2>Contact</h2></div>
+    <div class="inner">
+      <div class="contact-grid">
+        <div class="contact-row"><span class="k">Email</span>
+          <span class="v"><a href="mailto:limjh107@kaist.ac.kr">limjh107@kaist.ac.kr</a></span></div>
+        <div class="contact-row"><span class="k">Mobile</span>
+          <span class="v"><a href="tel:+821044114813">010-4411-4813</a></span></div>
+        <div class="contact-row"><span class="k">Office</span>
+          <span class="v">Faculty Wings, KAIST Munji Campus,<br>
+            193 Munji-ro, Yuseong-gu, Daejeon 34051, Republic of Korea</span></div>
+        <div class="contact-row"><span class="k">Scholar</span>
+          <span class="v"><a href="https://scholar.google.com/citations?user=zfSBUAIAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  © 2026 Jaehyuck Lim · Cho Chun Shik Graduate School of Mobility, KAIST
+</footer>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  function go(id){
+    if(!document.getElementById(id)) id='home';
+    pages.forEach(p=>p.classList.toggle('active', p.id===id));
+    document.querySelectorAll('.nav-links button').forEach(b=>
+      b.classList.toggle('active', b.dataset.target===id));
+    window.scrollTo({top:0,behavior:'auto'});
+    if(location.hash!=='#'+id) history.replaceState(null,'','#'+id);
+  }
+  document.querySelectorAll('[data-target]').forEach(b=>
+    b.addEventListener('click',()=>go(b.dataset.target)));
+  window.addEventListener('hashchange',()=>go(location.hash.slice(1)||'home'));
+
+  // paper sorting + numbering
+  function renumber(){
+    document.querySelectorAll('.papers').forEach(list=>{
+      const items=[...list.children];
+      items.forEach((el,i)=> el.querySelector('.num').textContent='['+(i+1)+']');
+    });
+  }
+  function sortPapers(dir){
+    document.querySelectorAll('.papers').forEach(list=>{
+      const items=[...list.children];
+      items.sort((a,b)=>{
+        const ya=+a.dataset.year, yb=+b.dataset.year;
+        return dir==='new' ? yb-ya : ya-yb;
+      });
+      items.forEach(el=>list.appendChild(el));
+    });
+    renumber();
+  }
+  const bNew=document.getElementById('sort-new'), bOld=document.getElementById('sort-old');
+  bNew.addEventListener('click',()=>{bNew.classList.add('active');bOld.classList.remove('active');sortPapers('new');});
+  bOld.addEventListener('click',()=>{bOld.classList.add('active');bNew.classList.remove('active');sortPapers('old');});
+
+  renumber();
+  go(location.hash.slice(1)||'home');
+</script>
+</body>
+</html>
