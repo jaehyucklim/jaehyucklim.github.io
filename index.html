@@ -9,12 +9,16 @@
   :root {
     --bg:#ffffff; --surface:#ffffff; --ink:#161616; --muted:#606060; --faint:#9a9a9a;
     --line:#e8e8e8; --line-strong:#d4d4d4; --accent:#2647d8; --accent-soft:#eaeeff;
+    --tag-paper-fg:#2647d8; --tag-paper-bg:#eaeeff;
+    --tag-talk-fg:#0f7a52; --tag-talk-bg:#e4f4ec;
     --maxw:840px;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#0f1012; --surface:#161719; --ink:#eaeaea; --muted:#a0a0a4; --faint:#6b6c70;
-      --line:#26272a; --line-strong:#34353a; --accent:#93aaf5; --accent-soft:#182036; }
+      --line:#26272a; --line-strong:#34353a; --accent:#93aaf5; --accent-soft:#182036;
+      --tag-paper-fg:#93aaf5; --tag-paper-bg:#182036;
+      --tag-talk-fg:#5ec9a3; --tag-talk-bg:#12291f; }
   }
   :root[data-theme="light"]{ --bg:#ffffff; --surface:#ffffff; --ink:#161616; --muted:#606060;
     --faint:#9a9a9a; --line:#e8e8e8; --line-strong:#d4d4d4; --accent:#2647d8; --accent-soft:#eaeeff; }
@@ -92,6 +96,8 @@
   .news-item .txt { color:var(--ink); font-size:0.95rem; }
   .news-item .tag { display:inline-block; font-size:0.7rem; font-weight:700; color:var(--accent);
     background:var(--accent-soft); padding:2px 7px; border-radius:4px; margin-right:8px; vertical-align:1px; }
+  .news-item .tag.paper { color:var(--tag-paper-fg); background:var(--tag-paper-bg); }
+  .news-item .tag.talk { color:var(--tag-talk-fg); background:var(--tag-talk-bg); }
   @media (max-width:640px){ .news-item { grid-template-columns:1fr; gap:3px; } }
 
   /* ---- inner pages ---- */
@@ -269,15 +275,19 @@
       <div class="news">
         <div class="news-item">
           <span class="date">2025.11</span>
-          <span class="txt"><span class="tag">TALK</span>Oral Presentation at <em>IEEE ITSC 2025</em>.</span>
+          <span class="txt"><span class="tag paper">PAPER</span>Oral Presentation at <em>IEEE ITSC 2025</em>.</span>
+        </div>
+        <div class="news-item">
+          <span class="date">2025.09</span>
+          <span class="txt"><span class="tag talk">TALK</span>Selected for Park Changho Scholarship (Transportation).</span>
         </div>
         <div class="news-item">
           <span class="date">2025.01</span>
-          <span class="txt"><span class="tag">PAPER</span>Paper Publication in <em>Tunnelling and Underground Space Technology</em> (Q1, IF 8.7).</span>
+          <span class="txt"><span class="tag paper">PAPER</span>Paper Publication in <em>Tunnelling and Underground Space Technology</em> (Q1, IF 8.7).</span>
         </div>
         <div class="news-item">
           <span class="date">2024.01</span>
-          <span class="txt"><span class="tag">POSTER</span>Poster Presentation at <em>TRB 103rd Annual Meeting</em>.</span>
+          <span class="txt"><span class="tag paper">PAPER</span>Poster Presentation at <em>TRB 103rd Annual Meeting</em>.</span>
         </div>
       </div>
     </div>
